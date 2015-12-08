@@ -72,6 +72,25 @@ function handleEditAlbumClick(e) {
 }
 
 function handleSaveChangesClick(e) {
+  var albumId = $(this).parents('.album').data('album-id');
+  var $albumRow = getAlbumRowById(albumId);
+
+  var data = {
+    name: $albumRow.find('.edit-album-name').val(),
+    artistName: $albumRow.find('.edit-artist-name').val(),
+    releaseDate: $albumRow.find('.edit-album-release-date').val()
+  };
+
+  $.ajax({
+    method: 'PUT',
+    url: '/api/albums/' + albumId,
+    data: data,
+    success: function(data) {
+      console.log(data);
+    }
+  });
+  //re-show buttons and hide the save button
+  //$(this).parent().find('.btn').toggle();
 
 }
 
