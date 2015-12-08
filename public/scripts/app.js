@@ -41,9 +41,16 @@ $(document).ready(function() {
   $('#albums').on('click', '.edit-album', handleEditAlbumClick);
 
   $('#albums').on('click', '.put-album', handleSaveChangesClick);
+
+  $('#albums').on('click', '.edit-songs', handleEditSongsClick);
 });
 
 /* End document ready */
+
+function handleEditSongsClick(e) {
+  $('#editSongsModal').modal('show');
+}
+
 
 // accepts an album id (mongo id) and return the row in which that album exists
 function getAlbumRowById(id) {
