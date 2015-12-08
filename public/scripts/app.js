@@ -57,8 +57,20 @@ function handleNewSongSubmit(e) {
   $.post(postUrl, formData)
     .success(function(song) {
       console.log('song', song);
+
+      // re-get full album and render on page
+      $.get('/api/albums/' + albumId).success(function(album) {
+        //remove old entry
+        $('[data-album-id='+ albumId + ']').remove();
+        // render a replacement
+        renderAlbum(album);
+      });
+
+      //clear form
       $('#songName').val('');
       $('#trackNumber').val('');
+      $('#songModal').modal('hide');
+
     });
 }
 
