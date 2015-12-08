@@ -48,7 +48,30 @@ $(document).ready(function() {
 /* End document ready */
 
 function handleEditSongsClick(e) {
-  $('#editSongsModal').modal('show');
+  var albumId = $(this).parents('.album').data('album-id');
+  // let's get the songs for this album
+  $.get('/api/albums/' + albumId + '/songs').success(function(songs) {
+    var formHtml = generateEditSongsModalHtml(songs);
+    $('#editSongsModalBody').html(formHtml);
+    $('#editSongsModal').modal('show');
+  });
+}
+
+// takes an array of songs and generates an EDIT form for them
+function generateEditSongsModalHtml(songs) {
+  var html = '';
+  songs.forEach(function(song) {
+    html += '<form class="form-inline" id="' + song.id  + '"' +
+            '  <div class="form-group">' +
+            '    <input type="text" class="form-control song-trackNumber" value="' + song.trackNumber + '">' +
+            '  </div>'+
+            '  <div class="form-group">' +
+            '    <input type="email" class="form-control song-name" value="' + song.name + '">' +
+            '  </div>'+
+            '</form>';
+  });
+
+  return html;
 }
 
 
