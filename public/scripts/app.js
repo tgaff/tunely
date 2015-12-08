@@ -35,8 +35,31 @@ $(document).ready(function() {
     $('#songModal').modal();
   });
 
+  $('#saveSong').on('click', handleNewSongSubmit);
 
 });
+
+// handles the modal fields and POSTing the form to the server
+function handleNewSongSubmit(e) {
+  var albumId = $('#songModal').data('album-id');
+  var songName = $('#songName').val();
+  var trackNumber = $('#trackNumber').val();
+
+  var formData = {
+    name: songName,
+    trackNumber: trackNumber
+  };
+
+  var postUrl = '/api/albums/' + albumId + '/songs';
+  console.log('posting to ', postUrl, ' with data ', formData);
+
+  $.post(postUrl, formData)
+    .success(function(songs) {
+      console.log('songs', songs);
+      $('#songName').val('');
+      $('#trackNumber').val('');
+    });
+}
 
 
 function buildSongsHtml(songs) {
