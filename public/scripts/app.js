@@ -66,7 +66,10 @@ function generateEditSongsModalHtml(songs) {
             '    <input type="text" class="form-control song-trackNumber" value="' + song.trackNumber + '">' +
             '  </div>'+
             '  <div class="form-group">' +
-            '    <input type="email" class="form-control song-name" value="' + song.name + '">' +
+            '    <input type="text" class="form-control song-name" value="' + song.name + '">' +
+            '  </div>'+
+            '  <div class="form-group">' +
+            '    <button class="btn btn-danger" data-song-id="' + song._id + '">x</button>' +
             '  </div>'+
             '</form>';
   });
