@@ -45,6 +45,14 @@ $(document).ready(function() {
 function handleDeleteAlbumClick(e) {
   var albumId = $(this).parents('.album').data('album-id');
   console.log('someone wants to delete album id=' + albumId );
+  $.ajax({
+    method: 'DELETE',
+    url: ('/api/albums/' + albumId),
+    success: function() {
+      console.log("He's dead Jim");
+      $('[data-album-id='+ albumId + ']').remove();
+    }
+  });
 }
 
 // handles the modal fields and POSTing the form to the server
