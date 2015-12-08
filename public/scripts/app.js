@@ -68,7 +68,7 @@ function handleEditAlbumClick(e) {
   $albumRow.find('span.artist-name').html('<input class="edit-artist-name" value="' + artistName + '"></input>');
 
   var releaseDate = $albumRow.find('span.album-release-date').text();
-  $albumRow.find('span.album-release-date').html('<input class="edit-album-name" value="' + releaseDate + '"></input>');
+  $albumRow.find('span.album-release-date').html('<input class="edit-album-release-date" value="' + releaseDate + '"></input>');
 }
 
 function handleSaveChangesClick(e) {
@@ -87,11 +87,9 @@ function handleSaveChangesClick(e) {
     data: data,
     success: function(data) {
       console.log(data);
+      $albumRow.replaceWith(generateAlbumHtml(data));
     }
   });
-  //re-show buttons and hide the save button
-  //$(this).parent().find('.btn').toggle();
-
 }
 
 
@@ -158,12 +156,8 @@ function buildSongsHtml(songs) {
   return songsHtml;
 }
 
-
-
-// this function takes a single album and renders it to the page
-function renderAlbum(album) {
-  console.log('rendering album:', album);
-
+// generate just the html for an Album row
+function generateAlbumHtml(album) {
   var albumHtml =
   "        <!-- one album -->" +
   "        <div class='row album' data-album-id='" + album._id + "'>" +
@@ -209,6 +203,13 @@ function renderAlbum(album) {
   "            </div>" +
   "          </div>" +
   "          <!-- end one album -->";
-
-  $('#albums').prepend(albumHtml);
+  return albumHtml;
  }
+
+// this function takes a single album and renders it to the page
+function renderAlbum(album) {
+  var html = generateAlbumHtml(album);
+  console.log('rendering album:', album);
+
+  $('#albums').prepend(html);
+}
