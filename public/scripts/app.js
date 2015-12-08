@@ -27,7 +27,17 @@ $(document).ready(function() {
     $(this).trigger("reset");
   });
 
+
+  $('#albums').on('click', '.add-song', function(e) {
+    var id= $(this).parents('.album').data('album-id');
+    console.log('id',id);
+    $('#songModal').data('album-id', id);
+    $('#songModal').modal();
+  });
+
+
 });
+
 
 function buildSongsHtml(songs) {
   var songText = "    &ndash; ";
@@ -50,7 +60,7 @@ function renderAlbum(album) {
 
   var albumHtml =
   "        <!-- one album -->" +
-  "        <div class='row album' data-album-id='" + "HARDCODED ALBUM ID" + "'>" +
+  "        <div class='row album' data-album-id='" + album._id + "'>" +
   "          <div class='col-md-10 col-md-offset-1'>" +
   "            <div class='panel panel-default'>" +
   "              <div class='panel-body'>" +
@@ -86,6 +96,7 @@ function renderAlbum(album) {
   "              </div>" + // end of panel-body
 
   "              <div class='panel-footer'>" +
+  "                <button class='btn btn-primary add-song'>Add Song</button>" +
   "              </div>" +
 
   "            </div>" +
