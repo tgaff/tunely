@@ -43,25 +43,29 @@ $(document).ready(function() {
   $('#albums').on('click', '.put-album', handleSaveChangesClick);
 
   $('#albums').on('click', '.edit-songs', handleEditSongsClick);
+
+  $('#editSongsModal').on('click', '.delete-song', handleDeleteSongClick);
 });
 
 /* End document ready */
 
 function handleEditSongsClick(e) {
+  e.preventDefault();
   var albumId = $(this).parents('.album').data('album-id');
   // let's get the songs for this album
   $.get('/api/albums/' + albumId + '/songs').success(function(songs) {
-    var formHtml = generateEditSongsModalHtml(songs);
+    var formHtml = generateEditSongsModalHtml(songs, albumId);
     $('#editSongsModalBody').html(formHtml);
     $('#editSongsModal').modal('show');
   });
 }
 
 // takes an array of songs and generates an EDIT form for them
-function generateEditSongsModalHtml(songs) {
+// we want to have both the albumId and songId available
+function generateEditSongsModalHtml(songs, albumId) {
   var html = '';
   songs.forEach(function(song) {
-    html += '<form class="form-inline" id="' + song.id  + '"' +
+    html += '<form class="form-inline" id="' + albumId  + '"' +
             '  <div class="form-group">' +
             '    <input type="text" class="form-control song-trackNumber" value="' + song.trackNumber + '">' +
             '  </div>'+
@@ -69,12 +73,28 @@ function generateEditSongsModalHtml(songs) {
             '    <input type="text" class="form-control song-name" value="' + song.name + '">' +
             '  </div>'+
             '  <div class="form-group">' +
-            '    <button class="btn btn-danger" data-song-id="' + song._id + '">x</button>' +
+            '    <button class="btn btn-danger delete-song" data-song-id="' + song._id + '">x</button>' +
             '  </div>'+
             '</form>';
   });
 
   return html;
+}
+
+function handleDeleteSongClick(e) {
+  e.preventDefault();
+  var songId = $(this).data('song-id');
+  var albumId = $(this).closest('form').attr('id');
+  var $thisSong = $(this);
+  var requestUrl = ('/api/albums/' + albumId + '/songs/' + songId);
+  console.log('DELETE ', requestUrl);
+  $.ajax({
+    method: 'DELETE',
+    url: requestUrl,
+    success: function(data) {
+      $thisSong.closest('form').remove();
+    }
+  });
 }
 
 
