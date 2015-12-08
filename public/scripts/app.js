@@ -29,7 +29,18 @@ $(document).ready(function() {
 
 });
 
-
+function buildSongsHtml(songs) {
+  var songText = "    &ndash; ";
+  songs.forEach(function(song) {
+    songText = songText + "(" + song.trackNumber + ") " + song.name + " &ndash; ";
+  });
+  var songsHtml  =
+   "                      <li class='list-group-item'>" +
+   "                        <h4 class='inline-header'>Songs:</h4>" +
+   "                         <span>" + songText + "</span>" +
+   "                      </li>";
+  return songsHtml;
+}
 
 
 
@@ -63,6 +74,10 @@ function renderAlbum(album) {
   "                        <span class='album-releaseDate'>" + "HARDCODED RELEASE DATE" + "</span>" +
 
   "                      </li>" +
+
+  buildSongsHtml(album.songs) +
+
+
   "                    </ul>" +
   "                  </div>" +
   "                </div>" +
