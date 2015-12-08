@@ -52,12 +52,18 @@ app.get('/api/albums', function albumsIndex(req, res) {
 });
 
 app.post('/api/albums', function albumCreate(req, res) {
-  console.log(req.body);
+  console.log('body', req.body);
 
   // split at comma and remove and trailing space
   var genres = req.body.genres.split(',').map(function(item) { return item.trim(); } );
   req.body.genres = genres;
-  res.json(req.body);
+
+  db.Album.create(req.body, function(err, album) {
+    if (err) { console.log('error', err); }
+    console.log(album);
+    res.json(album);
+  });
+
 });
 
 
