@@ -37,8 +37,15 @@ $(document).ready(function() {
 
   $('#saveSong').on('click', handleNewSongSubmit);
 
+  $('#albums').on('click', '.delete-album', handleDeleteAlbumClick);
+
 });
 
+
+function handleDeleteAlbumClick(e) {
+  var albumId = $(this).parents('.album').data('album-id');
+  console.log('someone wants to delete album id=' + albumId );
+}
 
 // handles the modal fields and POSTing the form to the server
 function handleNewSongSubmit(e) {
@@ -133,6 +140,7 @@ function renderAlbum(album) {
 
   "              <div class='panel-footer'>" +
   "                <button class='btn btn-primary add-song'>Add Song</button>" +
+  "                <button class='btn btn-danger delete-album'>Delete Album</button>" +
   "              </div>" +
 
   "            </div>" +
