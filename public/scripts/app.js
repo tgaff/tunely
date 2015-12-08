@@ -39,6 +39,7 @@ $(document).ready(function() {
 
 });
 
+
 // handles the modal fields and POSTing the form to the server
 function handleNewSongSubmit(e) {
   var albumId = $('#songModal').data('album-id');
@@ -54,12 +55,13 @@ function handleNewSongSubmit(e) {
   console.log('posting to ', postUrl, ' with data ', formData);
 
   $.post(postUrl, formData)
-    .success(function(songs) {
-      console.log('songs', songs);
+    .success(function(song) {
+      console.log('song', song);
       $('#songName').val('');
       $('#trackNumber').val('');
     });
 }
+
 
 
 function buildSongsHtml(songs) {
