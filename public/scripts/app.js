@@ -93,6 +93,15 @@ function handleDeleteSongClick(e) {
     url: requestUrl,
     success: function(data) {
       $thisSong.closest('form').remove();
+      // let's get the songs again (now that one is onge) and then we'll fix the <li> on the package
+      $.get('/api/albums/' + albumId + '/songs').success(function(someAlbums) {
+        console.log('replacement albums', someAlbums);
+        // build a new li
+        var replacementLi = buildSongsHtml(someAlbums);
+        // now replace the <li> with the songs on it.
+        var $originalLi = $('[data-album-id=' + albumId + '] .songs-list');
+        $($originalLi).replaceWith(replacementLi);
+      });
     }
   });
 }
@@ -202,7 +211,7 @@ function buildSongsHtml(songs) {
     songText = songText + "(" + song.trackNumber + ") " + song.name + " &ndash; ";
   });
   var songsHtml  =
-   "                      <li class='list-group-item'>" +
+   "                      <li class='list-group-item songs-list'>" +
    "                        <h4 class='inline-header'>Songs:</h4>" +
    "                         <span>" + songText + "</span>" +
    "                      </li>";
