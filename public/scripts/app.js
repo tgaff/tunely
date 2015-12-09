@@ -45,9 +45,34 @@ $(document).ready(function() {
   $('#albums').on('click', '.edit-songs', handleEditSongsClick);
 
   $('#editSongsModal').on('click', '.delete-song', handleDeleteSongClick);
+
+  $('#editSongsModal').on('submit', 'form', handleUpdateSong);
 });
 
 /* End document ready */
+
+
+
+
+
+function handleUpdateSong(e) {
+  e.preventDefault();
+  // get the values from the item on the modal
+  var albumId = $(this).attr('id');
+  var trackNumber = $(this).find('.song-trackNumber').val();
+  var name = $(this).find('.song-name').val();
+  var songId = $(this).find('.delete-song').attr('data-song-id');
+  var url = '/api/albums/' + albumId + '/songs/' + songId;
+  console.log('PUT ', url, name, trackNumber);
+  $.ajax({
+    method: 'PUT',
+    url: url,
+    data: { trackNumber: trackNumber, name: name },
+    success: function (data) {
+      updateSongsList(albumId);
+    }
+  });
+}
 
 function handleEditSongsClick(e) {
   e.preventDefault();
@@ -74,6 +99,9 @@ function generateEditSongsModalHtml(songs, albumId) {
             '  </div>'+
             '  <div class="form-group">' +
             '    <button class="btn btn-danger delete-song" data-song-id="' + song._id + '">x</button>' +
+            '  </div>'+
+            '  <div class="form-group">' +
+            '    <button type="submit" class="btn btn-success save-song" data-song-id="' + song._id + '">save</span></button>' +
             '  </div>'+
             '</form>';
   });
