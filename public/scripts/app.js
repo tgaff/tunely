@@ -25,8 +25,15 @@ $(document).ready(function() {
     $(this).trigger("reset");
   });
 
-});
 
+
+  $('#albums').on('click', '.add-song', function(e) {
+      console.log('add-song clicked!');
+      var id= $(this).closest('.album').data('album-id'); // "5665ff1678209c64e51b4e7b"
+      console.log('id',id);
+  });
+
+});
 
 
 
