@@ -79,7 +79,12 @@ function handleNewSongSubmit(e) {
     // Note there are a couple of ways we could do this.
     // 1. re-retrieve the entire album and call renderAlbum with it (cost: extra server round-trip)
     // 2. allow the server to respond with the entire album and then renderAlbum (slightly less standard)
-    console.log('for now lets log the results and wait till we have the server setup:', data);
+    $.get('/api/albums/' + albumId, function(data) {
+      // find and remove this album from the page
+      $('[data-album-id=' + albumId + ']').remove();
+      // re-draw it on the page!
+      renderAlbum(data);
+    })
   }).error(function(err) {
     console.log('post to /api/albums/:albumId/songs resulted in error', err);
   });

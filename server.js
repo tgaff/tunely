@@ -56,6 +56,16 @@ app.get('/api/albums', function albumsIndex(req, res) {
   });
 });
 
+app.get('/api/albums/:albumId', function albumShow(req, res) {
+  db.Album.findById(req.params.albumId, function(err, foundAlbum) {
+    if (err) {
+      res.status(404).json('album not found')
+    } else {
+      res.json(foundAlbum);
+    }
+  });
+});
+
 app.post('/api/albums', function albumCreate(req, res) {
   console.log('body', req.body);
 
