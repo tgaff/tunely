@@ -58,13 +58,16 @@ function handleNewSongSubmit(e) {
   var $trackNumberField = $modal.find('#trackNumber');
 
   // get data from modal fields
-  var songName = $songNameField.val();
-  var trackNumber = $trackNumberField.val();
+  // note the server expects the keys to be 'name', 'trackNumber' so we use those.
+  var dataToPost = {
+    name: $songNameField.val(),
+    trackNumber: $trackNumberField.val()
+  };
   var albumId = $modal.data('albumId');
   console.log('retrieved songName:', songName, ' and trackNumber:', trackNumber, ' for album w/ id: ', albumId);
   // POST to SERVER
   var songPostToServerUrl = '/api/albums/'+ albumId + '/songs';
-  $.post(songPostToServerUrl, function(data) {
+  $.post(songPostToServerUrl, dataToPost, function(data) {
     console.log('received data from post to /songs:', data);
     // clear form
     $songNameField.val('');
@@ -75,7 +78,7 @@ function handleNewSongSubmit(e) {
     // update the correct album to show the new song
     // Note there are a couple of ways we could do this.
     // 1. re-retrieve the entire album and call renderAlbum with it (cost: extra server round-trip)
-    // 2. insert the new song at the end of the album's song list via jQuery (cost: slightly more error prone)
+    // 2. allow the server to respond with the entire album and then renderAlbum (slightly less standard)
     console.log('for now lets log the results and wait till we have the server setup:', data);
   }).error(function(err) {
     console.log('post to /api/albums/:albumId/songs resulted in error', err);
